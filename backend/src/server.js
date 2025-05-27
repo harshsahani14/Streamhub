@@ -11,6 +11,8 @@ const app = express();
 
 app.use( "/api/auth",authRouter )
 
+app.use(express.json());
+
 
 app.listen( PORT ,()=>{
     console.log('Bruh');
