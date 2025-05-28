@@ -7,7 +7,9 @@ dotenv.config()
 export async function signup(req,res){
     
     try{
-        const {email,fullName,password} = req.body;
+
+        console.log(req.body)
+        const {fullName,email,password} = req.body;
 
         if(!email || !fullName || !password){
             return res.status(400).json({
@@ -61,7 +63,7 @@ export async function signup(req,res){
     }
     catch(e){
 
-        console.log("Error in creating user")
+        console.log(e.message)
         return res.status(500).json({
             success:false,
             message:"Internal server error"
