@@ -72,7 +72,48 @@ export async function signup(req,res){
 }
 
 export async function login(req,res){
-    res.send("Signin")
+    
+    try{
+
+        const {email,password} = req.body;
+
+        if(!email || !password) {
+            return res.status(400).json({message:"All fields are required"});
+        }
+
+        const user = await User.findOne({email});
+
+        if(!user){
+            return res.status(401).json({message:"Invalid email or password"});
+        }
+
+        const isPassowordCorrect = await User.matchPassword(password)
+
+        if(!isPassowordCorrect){
+            return res.status(401).json({message:"Invalid email or password"});
+        }
+
+        const token = jwt.sign( {userId:newUser._id} , process.env.JWT_SECRET_KEY, {
+            expiresIn:"7d"
+        })
+
+        res.cookie("jwt",token,{
+            maxAge:7*24*60*60*1000,
+            httpOnly:true, // prevent XSS attacks
+            sameSite:"strict", //prevent CSRF attacks
+            secure: process.env.NODE_ENV === "production"
+            
+        })
+
+        return res.status(200).json({ success:true,user })
+    }
+    catch(e){
+        console.log(e.message)
+        return res.status(500).json({
+            success:false,
+            message:"Internal server error"
+        })
+    }
 }
 
 export async function logout(req,res){
