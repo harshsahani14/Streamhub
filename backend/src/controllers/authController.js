@@ -87,13 +87,13 @@ export async function login(req,res){
             return res.status(401).json({message:"Invalid email or password"});
         }
 
-        const isPassowordCorrect = await User.matchPassword(password)
+        const isPassowordCorrect = await user.matchPassword(password)
 
         if(!isPassowordCorrect){
             return res.status(401).json({message:"Invalid email or password"});
         }
 
-        const token = jwt.sign( {userId:newUser._id} , process.env.JWT_SECRET_KEY, {
+        const token = jwt.sign( {userId:user._id} , process.env.JWT_SECRET_KEY, {
             expiresIn:"7d"
         })
 
