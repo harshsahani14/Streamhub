@@ -117,5 +117,6 @@ export async function login(req,res){
 }
 
 export async function logout(req,res){
-    res.send("Signin")
+    res.clearCookie("jwt")
+    return res.status(200).json({message:"Logout successful"})
 }
