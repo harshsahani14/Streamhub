@@ -1,6 +1,7 @@
 import User from "../models/User.js"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
+import { upsertUser } from "../lib/stream.js"
 
 dotenv.config()
 
@@ -44,6 +45,14 @@ export async function signup(req,res){
             profilePic:avatar,
 
         })
+
+        await upsertUser({
+            id:newUser._id,
+            name:newUser.fullName,
+            image:newUser.profilePic || ""
+        })
+
+        console.log(`Stream ser created for ${newUser.fullName}`)
 
         const token = jwt.sign( {userId:newUser._id} , process.env.JWT_SECRET_KEY, {
             expiresIn:"7d"
