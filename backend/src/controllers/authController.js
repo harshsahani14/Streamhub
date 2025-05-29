@@ -46,13 +46,17 @@ export async function signup(req,res){
 
         })
 
-        await upsertUser({
-            id:newUser._id,
-            name:newUser.fullName,
-            image:newUser.profilePic || ""
-        })
+        try{
+            await upsertUser({
+                id:newUser._id.toString(),
+                name:newUser.fullName,
+                image:newUser.profilePic || ""
+            })
 
-        console.log(`Stream ser created for ${newUser.fullName}`)
+            console.log(`Stream user created for ${newUser.fullName}`)
+        }catch(e){
+            console.log('Error while creating user on stream',e)
+        }
 
         const token = jwt.sign( {userId:newUser._id} , process.env.JWT_SECRET_KEY, {
             expiresIn:"7d"
@@ -160,6 +164,19 @@ export async function onboard(req,res){
             return res.status(404).json({
                 message:"User not found"
             })
+        }
+
+        try{
+            await upsertUser({
+                id:updateUser._id.toString(),
+                name:updateUser.fullName,
+                image:updateUser.profilePic || ""
+            })
+
+            console.log("Stream user updated sucessfully")
+        }
+        catch(e){
+            console.log('Error while updating user',e)
         }
 
         return res.status(200).json({
