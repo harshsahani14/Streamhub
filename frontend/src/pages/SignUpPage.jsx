@@ -1,17 +1,28 @@
 import React, { useState } from 'react'
 import {ShipWheelIcon} from "lucide-react"
 import { Link } from 'react-router'
+import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query'
+import { axiosInsance } from '../lib/axios'
+import { signup } from '../lib/api'
 
 const SignUpPage = () => {
 
   const [signUpData,setSignUpData] = useState({
     fullName:"",
-    emailAddress:"",
+    email:"",
     password:""
   })
 
-  const handleSubmit = ()=>{
+  const queryClient = useQueryClient()
+  
+  const { mutate:signUpMutation,isPending,error } = useMutation({
+    mutationFn: signup,
+    onSuccess:()=> queryClient.invalidateQueries({queryKey : ["authUser"]})
+  })
+  const handleSubmit = (e)=>{
+    e.preventDefault()
 
+    signUpMutation(signUpData)
   }
 
   return (
@@ -30,6 +41,15 @@ const SignUpPage = () => {
                 Streamify
               </span>
           </div>
+
+
+        {/* ERROR MESSAGE IF ANY */}
+          {error && (
+            <div className="alert alert-error mb-4">
+              <span>{error.response.data.message}</span>
+            </div>
+          )}
+
 
           <div className='w-full'>
             <form onSubmit={handleSubmit}>
@@ -69,8 +89,8 @@ const SignUpPage = () => {
                             type="email"
                             placeholder="johndoe@gmail.com"
                             className="input input-bordered w-full"
-                            value={signUpData.emailAddress}
-                            onChange={(e) => setSignUpData({ ...signUpData, emailAddress: e.target.value })}
+                            value={signUpData.email}
+                            onChange={(e) => setSignUpData({ ...signUpData, email: e.target.value })}
                             required
                           />
                         </div>
@@ -110,7 +130,14 @@ const SignUpPage = () => {
 
                   <button className="btn btn-primary w-full" type="submit">
                   
-                    Create Account
+                    {isPending ? (
+                    <>
+                      <span className="loading loading-spinner loading-xs"></span>
+                      Loading...
+                    </>
+                    ) : (
+                      "Create Account"
+                    )}
                   </button>
 
                    <div className="text-center mt-4">
