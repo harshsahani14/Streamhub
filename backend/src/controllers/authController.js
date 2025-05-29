@@ -113,6 +113,7 @@ export async function login(req,res){
             secure: process.env.NODE_ENV === "production"
             
         })
+        
 
         return res.status(200).json({ success:true,user })
     }
@@ -128,4 +129,49 @@ export async function login(req,res){
 export async function logout(req,res){
     res.clearCookie("jwt")
     return res.status(200).json({message:"Logout successful"})
+}
+
+export async function onboard(req,res){
+
+    try{
+        const userId = req.user._id;
+
+        const {fullName,bio,nativeLanguage,learningLanguage,location} = req.body
+
+        if(!fullName,!bio,!nativeLanguage,!learningLanguage,!location){
+            return res.status(400).json({
+                message:"All fields are required",
+                missingField:[
+                    !fullName && "fullName",
+                    !bio && "bio",
+                    !nativeLanguage && "nativeLanguage",
+                    !learningLanguage && "learningLanguage",
+                    !location && "location"
+                ].filter(Boolean)
+            })
+        }
+
+        const updateUser = await User.findByIdAndUpdate( userId,{
+            ...req.body,
+            isOnBoarded:true
+        },{new:true} )
+
+        if(!updateUser){
+            return res.status(404).json({
+                message:"User not found"
+            })
+        }
+
+        return res.status(200).json({
+            message:"User onboarded sucessfully"
+        })
+
+    }
+    catch(e){
+        console.log("Error while onboarding user",e);
+
+        return res.status(500).json({
+            message:"Internal server error"
+        })
+    }
 }
