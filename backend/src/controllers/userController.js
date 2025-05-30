@@ -5,8 +5,8 @@ export async function getRecommendedUsers(req,res) {
     
     try{
 
-        const userId = req.user._id;
-        const user = req.user
+        const currentUserId = req.user._id;
+        const currentUser = req.user
 
         // Understand this later
         const recommendedUsers = await User.find({
@@ -17,9 +17,7 @@ export async function getRecommendedUsers(req,res) {
             ],
         });
 
-        return res.status(200).json({
-            message:"Recommended user fetched"
-        })
+        return res.status(200).json(recommendedUsers)
     }
     catch(e){
 

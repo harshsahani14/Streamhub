@@ -32,3 +32,28 @@ export const completeOnBoarding = async (userData)=>{
 
     return res.data
 }
+
+export const getRecommendedUsers = async ()=>{
+    const res = await axiosInsance.get("/users")
+
+    return res.data
+}
+
+export const getUserFriends = async ()=>{
+    const res = await axiosInsance.get("/users/friends")
+
+    return res.data
+}
+
+export const getOutgoingFriends = async ()=>{
+    const res = await axiosInsance.get("/users/outgoing-friend-request")
+
+    return res.data
+}
+
+export const sendFriendRequest = async (userId)=>{
+    const res = await axiosInsance.post(`/users/friend-request/${userId}`)
+
+    return res.data
+}
+
