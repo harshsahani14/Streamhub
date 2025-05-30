@@ -10,3 +10,9 @@ export const getAuthUser = async ()=>{
     const res = await axiosInsance.get("/auth/me")
     return res.data
 }
+
+export const completeOnBoarding = async (userData)=>{
+    const res = await axiosInsance.post("/auth/onBoard",userData)
+
+    return res.data
+}
