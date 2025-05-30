@@ -1,6 +1,6 @@
 import React from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { login } from '../lib/api,js'
+import { login } from '../lib/api.js'
 
 const useLogin = () => {
 
