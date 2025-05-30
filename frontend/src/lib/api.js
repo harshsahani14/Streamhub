@@ -12,9 +12,19 @@ export const login = async(loginData)=>{
     return res.data
 }
 
-export const getAuthUser = async ()=>{
-    const res = await axiosInsance.get("/auth/me")
+export const logout = async()=>{
+    
+    const res = await axiosInsance.post("/auth/logout")
     return res.data
+}
+
+export const getAuthUser = async ()=>{
+    try {
+        const res = await axiosInsance.get("/auth/me")
+        return res.data
+    } catch (error) {
+        return null;
+    }
 }
 
 export const completeOnBoarding = async (userData)=>{
