@@ -34,25 +34,25 @@ export const completeOnBoarding = async (userData)=>{
 }
 
 export const getRecommendedUsers = async ()=>{
-    const res = await axiosInsance.get("/users")
+    const res = await axiosInsance.get("/user")
 
     return res.data
 }
 
 export const getUserFriends = async ()=>{
-    const res = await axiosInsance.get("/users/friends")
+    const res = await axiosInsance.get("/user/friends")
 
     return res.data
 }
 
 export const getOutgoingFriends = async ()=>{
-    const res = await axiosInsance.get("/users/outgoing-friend-request")
+    const res = await axiosInsance.get("/user/outgoing-friend-request")
 
     return res.data
 }
 
 export const sendFriendRequest = async (userId)=>{
-    const res = await axiosInsance.post(`/users/friend-request/${userId}`)
+    const res = await axiosInsance.post(`/user/friend-request/${userId}`)
 
     return res.data
 }
