@@ -57,3 +57,14 @@ export const sendFriendRequest = async (userId)=>{
     return res.data
 }
 
+export const getFriendRequest = async ()=>{
+    const res = await axiosInsance.get(`/user/friend-request`)
+
+    return res.data
+}
+
+export const acceptFriendRequest = async (userId)=>{
+    const res = await axiosInsance.put(`/user/friend-request/${userId}/accept`)
+
+    return res.data
+}

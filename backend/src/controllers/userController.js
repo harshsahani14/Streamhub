@@ -112,9 +112,8 @@ export async function acceptFriendRequest(req, res) {
         .status(404)
         .json({ message: "Friend Request does not exists" });
     }
-
     // Verify current user is the receipient
-    if (friendRequest.recipient.toString() !== req.user._id) {
+    if (friendRequest.recipient.toString() !== req.user._id.toString()) {
       return res
         .status(403)
         .json({ message: "You are not authorized to accept this request " });
@@ -147,7 +146,7 @@ export async function acceptFriendRequest(req, res) {
 
 export async function getFriendRequest(req, res) {
   try {
-    const incomingRequests = await FriendRequest.find({
+    const incomingReqs = await FriendRequest.find({
       recipient: req.user._id,
       status: "pending",
     }).populate(
@@ -155,14 +154,14 @@ export async function getFriendRequest(req, res) {
       "fullName profilePic nativeLanguage learningLanguage"
     );
 
-    const acceptedRequests = await FriendRequest.find({
+    const acceptedReqs = await FriendRequest.find({
       sender: req.user._id,
       status: "accepted",
-    }).populate("sender", "fullName profilePic");
+    }).populate("recipient", "fullName profilePic");
 
     return res.status(200).json({
-      incomingRequests,
-      acceptedRequests,
+      incomingReqs,
+      acceptedReqs,
     });
   } catch (error) {
     console.log("Error in getFriendRequest controller", error.message);
@@ -182,9 +181,7 @@ export async function getOutgoingFriendRequest(req, res) {
       "fullName profilePic nativeLanguage learningLanguage"
     );
 
-    return res.status(200).json(
-      outgoingRequests,
-    );
+    return res.status(200).json(outgoingRequests);
   } catch (error) {
     console.log("Error in getOutgoingFriendRequest controller", error.message);
     res.status(500).json({
