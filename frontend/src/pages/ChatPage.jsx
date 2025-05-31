@@ -15,6 +15,8 @@ import {
 import toast from 'react-hot-toast';
 import { StreamChat } from 'stream-chat';
 import ChatLoader from '../components/ChatLoader.jsx';
+import "stream-chat-react/dist/css/v2/index.css"
+import CallButton from '../components/CallButton.jsx';
 
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY
 
@@ -40,7 +42,6 @@ const ChatPage = () => {
     const initChat = async ()=>{
 
       if(!authUser || !tokenData?.token){
-        toast.error("Error in loading chat page")
         return;
       }
 
@@ -78,17 +79,35 @@ const ChatPage = () => {
     }
 
     initChat()
-  },[tokenData,authUser])
+  },[tokenData,authUser,targetUserId])
+
+   const handleVideoCall = () => {
+    if (channel) {
+      const callUrl = `${window.location.origin}/call/${channel.id}`;
+
+      channel.sendMessage({
+        text: `I've started a video call. Join me here: ${callUrl}`,
+      });
+
+      toast.success("Video call link sent successfully!");
+    }
+  };
 
   if(loading || !chatClient || !channel) return <ChatLoader></ChatLoader>
+
+  
   return (
-    <div className='h-[93vh]'>
+    <div className='h-[93vh] ' >
 
       <Chat client={chatClient}
+      
       >
         <Channel channel={channel}
         >
+
+          
           <div className=' w-full relative'> 
+            <CallButton handleVideoCall={handleVideoCall} />
             <Window>
               <ChannelHeader/>
               <MessageList/>

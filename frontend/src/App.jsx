@@ -13,6 +13,7 @@ import useAuthUser from './hooks/useAuthUser.js'
 import Layout from './components/Layout.jsx'
 import { useThemeStore } from './store/useThemeStore.js'
 
+
 const App = () => {
 
   const { isLoading,authUser } = useAuthUser()
@@ -25,7 +26,7 @@ const App = () => {
   const isOnBoarded = authUser?.isOnBoarded;
 
   return (
-    <div data-theme={theme} >
+    <div className='h-screen' data-theme={theme} >
 
       <Routes>
 
@@ -46,13 +47,14 @@ const App = () => {
           </Layout>
 
         ) : <Navigate to={!isAuthenticated ? "/login" : "/onboarding"}></Navigate>}></Route>
-        <Route path='/call' element={isAuthenticated ?<CallPage/> : <Navigate to={"/login"}></Navigate>}></Route>
-        <Route path='/chat/:id' element={isAuthenticated && isOnBoarded ? (
-
+        <Route path='/call/:id' element={isAuthenticated && isOnBoarded ? (<CallPage/>) : <Navigate to={!isAuthenticated ? "/login" : "/onboarding"}></Navigate>}></Route>
+        <Route path='/chat/:id' 
+        element={isAuthenticated && isOnBoarded ? (
           <Layout showSidebar={false}>
-            <ChatPage></ChatPage>
+            <ChatPage/>
           </Layout>
-        ): <Navigate to={!isAuthenticated ? "/login" : "/onboarding"}></Navigate>}></Route>
+        ): 
+        <Navigate to={!isAuthenticated ? "/login" : "/onboarding"}></Navigate>}></Route>
         <Route path='/onboarding' element={isAuthenticated ?  ( isOnBoarded ? ( <Navigate to={"/"}></Navigate> ) : ( <OnboardingPage></OnboardingPage> ))  : (<Navigate to={"/login"}></Navigate>)  }></Route>
 
       </Routes>
