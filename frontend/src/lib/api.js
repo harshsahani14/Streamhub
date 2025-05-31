@@ -68,3 +68,10 @@ export const acceptFriendRequest = async (userId)=>{
 
     return res.data
 }
+
+export const getStreamToken = async ()=>{
+    const res = await axiosInsance.get(`/chat/token`)
+
+    return res.data
+}
+

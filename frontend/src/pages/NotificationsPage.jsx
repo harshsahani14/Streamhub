@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import React from 'react'
 import { acceptFriendRequest, getFriendRequest, sendFriendRequest } from '../lib/api.js'
 import toast from 'react-hot-toast'
-import { UserCheckIcon,ClockIcon,MessageSquareIcon } from 'lucide-react'
+import { UserCheckIcon,ClockIcon,MessageSquareIcon,BellIcon } from 'lucide-react'
 import NoNotificationsFound from '../components/NoNotificationsFound.jsx'
 
 const NotificationsPage = () => {
