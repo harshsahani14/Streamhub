@@ -1,14 +1,14 @@
-import SideBar from "./SideBar.jsx";
-import NavBar from "./NavBar.jsx";
+import Sidebar from "./Sidebar.jsx";
+import Navbar from "./Navbar.jsx";
 
 const Layout = ({ children, showSidebar = false }) => {
   return (
     <div className="min-h-screen">
       <div className="flex">
-        {showSidebar && <SideBar/>}
+        {showSidebar && <Sidebar/>}
 
         <div className="flex-1 flex flex-col">
-          <NavBar />
+          <Navbar />
 
           <main className="flex-1 overflow-y-auto">{children}</main>
         </div>

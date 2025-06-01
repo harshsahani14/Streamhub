@@ -26,16 +26,17 @@ const App = () => {
   const isOnBoarded = authUser?.isOnBoarded;
 
   return (
-    <div className='h-screen' data-theme={theme} >
+    <div  data-theme={theme} >
 
       <Routes>
 
       
         <Route path='/' element={isAuthenticated && isOnBoarded 
-          ? <Layout showSidebar={true}>
+          ? (<Layout showSidebar={true}>
 
             <HomePage></HomePage>
-          </Layout>: 
+          </Layout>)
+          : 
           <Navigate to={ !isAuthenticated ? "/login" : "/onboarding"  }/>
           }>   
           </Route>
